@@ -1,6 +1,7 @@
 package com.sourceallies.interview;
 
 import java.util.HashMap;
+import java.util.Arrays;
 
 public class PokerHand {
     private final String hand;
@@ -12,7 +13,7 @@ public class PokerHand {
         this.hand = hand;
         this.cards = convertHandToCards();
         this.counts = generateCountsMap();
-        calcRank();
+        this.rank = calcRank();
     }
 
     private HashMap<CardValue, Integer> generateCountsMap(){
@@ -27,15 +28,17 @@ public class PokerHand {
         return counts;
     }
 
-    private void calcRank(){
-        if(isThreeOfAKind()){
-            this.rank = PokerRank.THREEOFAKIND;
+    private PokerRank calcRank(){
+        if(isStraight()){
+            return PokerRank.STRAIGHT;
+        }else if(isThreeOfAKind()){
+            return PokerRank.THREEOFAKIND;
         }else if(containsTwoPairs()){
-            this.rank = PokerRank.TWOPAIRS;
+            return PokerRank.TWOPAIRS;
         }else if(containsPair()){
-            this.rank = PokerRank.PAIR;
+            return PokerRank.PAIR;
         }else{
-            this.rank = PokerRank.HIGHCARD;
+            return PokerRank.HIGHCARD;
         }
     }
 
@@ -55,9 +58,23 @@ public class PokerHand {
         return false;
     }
 
+    //5 consecutive values
+    private boolean isStraight(){
+        int initialVal = cards[0].getValue().getInt();
+
+        if( (initialVal + 1) == cards[1].getValue().getInt() &&
+            (initialVal + 2) == cards[2].getValue().getInt() &&
+            (initialVal + 3) == cards[3].getValue().getInt() &&
+            (initialVal + 4) == cards[4].getValue().getInt()) {
+            return true;
+        }
+
+        return false;
+    }   
+
     //Getters and Setters
-    public String getHand(){
-        return hand;
+    public Card[] getHand(){
+        return cards;
     }
 
     public PokerRank getRank(){
@@ -75,18 +92,15 @@ public class PokerHand {
         return pairCount;
     }
 
-    //Static Functions
-    private String[] generateHandAsStrings(String handAsString){
-        return handAsString.split(" ");
-    }
-
     private Card[] convertHandToCards(){
-        String[] tempHand = generateHandAsStrings(this.hand);
+        String[] tempHand = this.hand.split(" ");
         Card[] cards = new Card[5];
 
         for(int i = 0; i < cards.length; i++){
             cards[i] = new Card(tempHand[i]);
         }
+        
+        Arrays.sort(cards);
 
         return cards;
     }

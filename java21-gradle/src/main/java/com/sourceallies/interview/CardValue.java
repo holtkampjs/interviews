@@ -17,8 +17,8 @@ enum CardValue{
     KING    ('K'),
     ACE     ('A');
     
-    final char value;
-    final String cards = "23456789TJQKA";
+    private final char value;
+    private final String CARD_ORDER = "23456789TJQKA";
 
     CardValue (char value) {
         this.value = value;
@@ -35,7 +35,7 @@ enum CardValue{
     }
 
     int getInt(){
-        return cards.indexOf(this.value);
+        return CARD_ORDER.indexOf(this.value);
     }
 
 }

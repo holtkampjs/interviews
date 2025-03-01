@@ -12,9 +12,15 @@ public class Card implements Comparable<Card>{
     }
 
     @Override
-    public int compareTo(Card o) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
+    public int compareTo(Card otherCard) {
+
+        if(this.value.getInt() == otherCard.value.getInt()){
+            return 0;
+        }else if(this.value.getInt() < otherCard.value.getInt()){
+            return -1;
+        }else{
+            return 1;
+        }
     }
 
     public Suit getSuit(){

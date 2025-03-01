@@ -5,5 +5,6 @@ public enum PokerRank{
     PAIR,
     TWOPAIRS,
     THREEOFAKIND,
-    FLUSH
+    FLUSH,
+    STRAIGHT
 }
