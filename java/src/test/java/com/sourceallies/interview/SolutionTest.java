@@ -50,8 +50,16 @@ public class SolutionTest {
     @Test
     void testHighCardTie() {
         PokerService pokerService = new PokerService();
-        String result = pokerService.pokerHand("Q K 4 8 3", "J 3 9 T J");
+        String result = pokerService.pokerHand("Q K 4 8 3", "K 3 9 T J");
     
-        assertEquals("Black hand wins - high card: KING", result);
+        assertEquals("Tie", result);
+    }
+
+    @Test
+    void testPairWhiteWinsWithPair() {
+        PokerService pokerService = new PokerService();
+        String result = pokerService.pokerHand("Q 8 4 8 3", "K 3 9 T J");
+    
+        assertEquals("Black hand wins - Pair", result);
     }
 }

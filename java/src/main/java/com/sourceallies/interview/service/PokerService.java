@@ -2,13 +2,14 @@ package com.sourceallies.interview.service;
 
 import java.util.HashMap;
 
-import io.micrometer.common.util.StringUtils;
+import com.sourceallies.interview.enums.HandTypes;
 
 public class PokerService {
 
     HashMap<String, Integer> rankingMap = new HashMap<>();
     HashMap<Integer, String> cardNameMap = new HashMap<>();
     private char[] handRankings = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
+
 
     public PokerService() {
         rankingMap.put("2", 2);
@@ -36,14 +37,17 @@ public class PokerService {
         var blackHandValues = blackHand.split(" ");
         var whiteHandValues = whiteHand.split(" ");
 
-        String highHand = "";
         int whiteHighCard = 0;
         int blackHighCard = 0;
+        HandTypes whiteTypeOfHand = HandTypes.HighCard;
+        HandTypes blackTypeOfHand = HandTypes.HighCard;
 
         for (int i = 0; i < blackHandValues.length ; i++) {
             int rank = rankingMap.get(blackHandValues[i]);
             if (blackHighCard < rank) {
                 blackHighCard = rank;
+            } else if (blackHighCard == rank) {
+                blackTypeOfHand = HandTypes.Pair;
             }
         }
 
@@ -51,23 +55,37 @@ public class PokerService {
             int rank = rankingMap.get(whiteHandValues[i]);
             if (whiteHighCard < rank) {
                 whiteHighCard = rank;
+            } else if (whiteHighCard == rank) {
+                whiteTypeOfHand = HandTypes.Pair;
             }
         }
 
-        if (whiteHighCard > blackHighCard) {
-            String cardValue = cardNameMap.get(whiteHighCard);
-            if (cardValue != null) {
-                return "White hand wins - high card: " + cardValue;
+        if (blackTypeOfHand.compareTo(whiteTypeOfHand) > 0) {
+            return "Black hand wins - " + blackTypeOfHand.name();
+        } else if (blackTypeOfHand.compareTo(whiteTypeOfHand) == 0) {
+            if (whiteHighCard > blackHighCard) {
+                String cardValue = cardNameMap.get(whiteHighCard);
+                if (cardValue != null) {
+                    return "White hand wins - high card: " + cardValue;
+                } else {
+                    return "White hand wins - high card: " + whiteHighCard;
+                }
+            } else if (whiteHighCard == blackHighCard) {
+                return "Tie";
             } else {
-                return "White hand wins - high card: " + whiteHighCard;
+                String cardValue = cardNameMap.get(blackHighCard);
+                if (cardValue != null) {
+                    return "Black hand wins - high card: " + cardValue;
+                } else {
+                    return "Black hand wins - high card: " + blackHighCard;
+                }
             }
         } else {
-            String cardValue = cardNameMap.get(blackHighCard);
-            if (cardValue != null) {
-                return "Black hand wins - high card: " + cardValue;
-            } else {
-                return "Black hand wins - high card: " + blackHighCard;
-            }
+            return "White hand wins - " + whiteTypeOfHand.name();
         }
     }
+}
+
+private void calculateHighCardValue(int highHighValue, char[] charList) {
+    
 }
