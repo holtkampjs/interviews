@@ -37,13 +37,13 @@ public class PokerHandsTest{
     @Test
     void shouldBeHighCard(){
         PokerHand hand = new PokerHand("2H 3D 5S 9C KD");
-        assertEquals(hand.getRank(), PokerRank.HIGHCARD);
+        assertEquals(PokerRank.HIGHCARD, hand.getRank());
     }
 
     @Test
     void shouldBePair(){
         PokerHand hand = new PokerHand("2H 2D 5S 9C KD");
-        assertEquals(hand.getRank(), PokerRank.PAIR);
+        assertEquals(PokerRank.PAIR, hand.getRank());
     }
 
 }

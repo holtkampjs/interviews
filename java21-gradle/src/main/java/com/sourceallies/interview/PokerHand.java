@@ -1,6 +1,7 @@
 package com.sourceallies.interview;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PokerHand {
     private String hand = "";
@@ -22,7 +23,9 @@ public class PokerHand {
     }
 
     private void calcRank(){
-        if(containsPair()){
+        if(containsTwoPairs()){
+            this.rank = PokerRank.TWOPAIRS;
+        }else if(containsPair()){
             this.rank = PokerRank.PAIR;
         }else{
             this.rank = PokerRank.HIGHCARD;
@@ -30,18 +33,41 @@ public class PokerHand {
     }
 
     private boolean containsPair(){
-        for(int i = 0; i < handAsCards.length-1; i++){
+        HashMap<Character, Integer> counts = new HashMap<>();
+
+        for(int i = 0; i < handAsCards.length; i++){
             var currentCardValue = handAsCards[i].charAt(0);
-            for(int j = i+1; j < handAsCards.length; j++){
-                var nextCardValue = handAsCards[j].charAt(0);
-                if(currentCardValue == nextCardValue){
-                    return true;
-                }
-                
+            var currentCount = counts.getOrDefault(currentCardValue, 0) + 1;
+            counts.put(currentCardValue, currentCount);
+
+            if(currentCount >= 2){
+                return true;
             }
         }
-        
+
         return false;
+    }
+
+    private boolean containsTwoPairs(){
+
+        HashMap<Character, Integer> counts = new HashMap<>();
+        int pairCount = 0;
+
+        for(int i = 0; i < handAsCards.length; i++){
+            var currentCardValue = handAsCards[i].charAt(0);
+            var currentCount = counts.getOrDefault(currentCardValue, 0) + 1;
+            counts.put(currentCardValue, currentCount);
+        }
+
+        for(Character key : counts.keySet()){
+            //get value
+            int value = counts.get(key);
+            if(value == 2){
+                pairCount++;
+            }
+        }
+
+        return pairCount == 2;
     }
 
     public static String[] generateHand(String handAsString){
