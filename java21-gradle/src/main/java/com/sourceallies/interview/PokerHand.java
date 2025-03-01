@@ -9,17 +9,17 @@ public class PokerHand {
     private PokerRank rank;
     private HashMap<CardValue, Integer> counts;
 
-    PokerHand(String hand){
+    PokerHand(String hand) {
         this.hand = hand;
         this.cards = convertHandToCards();
         this.counts = generateCountsMap();
         this.rank = calcRank();
     }
 
-    private HashMap<CardValue, Integer> generateCountsMap(){
+    private HashMap<CardValue, Integer> generateCountsMap() {
         HashMap<CardValue, Integer> counts = new HashMap<>();
 
-        for(int i = 0; i < cards.length; i++){
+        for (int i = 0; i < cards.length; i++) {
             var currentCardValue = this.cards[i].getValue();
             var currentCount = counts.getOrDefault(currentCardValue, 0) + 1;
             counts.put(currentCardValue, currentCount);
@@ -28,96 +28,105 @@ public class PokerHand {
         return counts;
     }
 
-    private PokerRank calcRank(){
-        if(isFlush()){
+    private PokerRank calcRank() {
+        if (isFullHouse()) {
+            return PokerRank.FULLHOUSE;
+        } else if (isFlush()) {
             return PokerRank.FLUSH;
-        }else if(isStraight()){
+        } else if (isStraight()) {
             return PokerRank.STRAIGHT;
-        }else if(isThreeOfAKind()){
+        } else if (isThreeOfAKind()) {
             return PokerRank.THREEOFAKIND;
-        }else if(containsTwoPairs()){
+        } else if (containsTwoPairs()) {
             return PokerRank.TWOPAIRS;
-        }else if(containsPair()){
+        } else if (containsPair()) {
             return PokerRank.PAIR;
-        }else{
+        } else {
             return PokerRank.HIGHCARD;
         }
     }
 
-    private boolean containsPair(){
+    private boolean containsPair() {
         return countPairs() == 1;
     }
 
-    private boolean containsTwoPairs(){
+    private boolean containsTwoPairs() {
         return countPairs() == 2;
     }
 
-    private boolean isThreeOfAKind(){
-        for(CardValue key : this.counts.keySet()) {
-            if(counts.get(key) == 3) return true;
+    private boolean isThreeOfAKind() {
+        for (CardValue key : this.counts.keySet()) {
+            if (counts.get(key) == 3)
+                return true;
         }
 
         return false;
     }
 
-    //5 consecutive values
-    private boolean isStraight(){
+    private boolean isStraight() {
         int initialVal = cards[0].getValue().getInt();
 
-        if( (initialVal + 1) == cards[1].getValue().getInt() &&
-            (initialVal + 2) == cards[2].getValue().getInt() &&
-            (initialVal + 3) == cards[3].getValue().getInt() &&
-            (initialVal + 4) == cards[4].getValue().getInt()) 
-        {
+        if ((initialVal + 1) == cards[1].getValue().getInt() &&
+                (initialVal + 2) == cards[2].getValue().getInt() &&
+                (initialVal + 3) == cards[3].getValue().getInt() &&
+                (initialVal + 4) == cards[4].getValue().getInt()) {
             return true;
         }
 
         return false;
     }
 
-    private boolean isFlush(){
-        //get suit of first
+    private boolean isFlush() {
+        // get suit of first
         Suit suit = cards[0].getSuit();
 
-        if( suit == cards[1].getSuit() &&
-            suit == cards[2].getSuit() &&
-            suit == cards[3].getSuit() &&
-            suit == cards[4].getSuit() ) 
-        {
+        if (suit == cards[1].getSuit() &&
+                suit == cards[2].getSuit() &&
+                suit == cards[3].getSuit() &&
+                suit == cards[4].getSuit()) {
             return true;
         }
 
         return false;
     }
 
-    //Getters and Setters
-    public Card[] getHand(){
+    private boolean isFullHouse() {
+        // 3 of same value, and two of a different value
+        if (counts.keySet().size() == 2 && containsPair()) {
+            return true;
+        }
+        return false;
+
+    }
+
+    // Getters and Setters
+    public Card[] getHand() {
         return cards;
     }
 
-    public PokerRank getRank(){
+    public PokerRank getRank() {
         return rank;
     }
 
-    //Helper Functions
-    private int countPairs(){
+    // Helper Functions
+    private int countPairs() {
         int pairCount = 0;
-        for(CardValue key : this.counts.keySet()) {
-            if(this.counts.get(key) == 2){
+        for (CardValue key : this.counts.keySet()) {
+            if (this.counts.get(key) == 2) {
                 pairCount++;
             }
         }
         return pairCount;
     }
 
-    private Card[] convertHandToCards(){
+    private Card[] convertHandToCards() {
         String[] tempHand = this.hand.split(" ");
         Card[] cards = new Card[5];
 
-        for(int i = 0; i < cards.length; i++){
+        for (int i = 0; i < cards.length; i++) {
             cards[i] = new Card(tempHand[i]);
         }
-        
+
         Arrays.sort(cards);
         return cards;
     }

@@ -6,5 +6,6 @@ public enum PokerRank{
     TWOPAIRS,
     THREEOFAKIND,
     FLUSH,
-    STRAIGHT
+    STRAIGHT,
+    FULLHOUSE
 }

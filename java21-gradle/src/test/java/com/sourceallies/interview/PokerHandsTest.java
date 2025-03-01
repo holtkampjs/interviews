@@ -53,4 +53,10 @@ public class PokerHandsTest{
         assertEquals(PokerRank.FLUSH, spadesFlush.getRank());
         assertEquals(PokerRank.FLUSH, clubsFlush.getRank());
     }
+
+    @Test
+    void shouldBeFullHouse(){
+        PokerHand flush = new PokerHand("2H 2C 2S 3H 3H");
+        assertEquals(PokerRank.FULLHOUSE, flush.getRank());
+    }
 }
