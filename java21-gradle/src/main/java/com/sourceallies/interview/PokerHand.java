@@ -7,10 +7,12 @@ public class PokerHand {
     private String hand = "";
     private String[] handAsCards;
     private PokerRank rank;
+    private HashMap<Character, Integer> counts;
 
     PokerHand(String hand){
         this.hand = hand;
         this.handAsCards = generateHand(this.hand);
+        this.counts = generateCountsMap(this.handAsCards);
         calcRank();
     }
 
@@ -22,7 +24,23 @@ public class PokerHand {
         return rank;
     }
 
+    private HashMap<Character, Integer> generateCountsMap(String[] handAsCards){
+        HashMap<Character, Integer> counts = new HashMap<>();
+
+        for(int i = 0; i < handAsCards.length; i++){
+            var currentCardValue = handAsCards[i].charAt(0);
+            var currentCount = counts.getOrDefault(currentCardValue, 0) + 1;
+            counts.put(currentCardValue, currentCount);
+        }
+
+        return counts;
+    }
+
     private void calcRank(){
+        // if(isThreeOfAKind()){
+        //     this.rank = PokerRank.THREEOFAKIND;
+        // }else 
+        
         if(containsTwoPairs()){
             this.rank = PokerRank.TWOPAIRS;
         }else if(containsPair()){
@@ -33,42 +51,27 @@ public class PokerHand {
     }
 
     private boolean containsPair(){
-        HashMap<Character, Integer> counts = new HashMap<>();
-
-        for(int i = 0; i < handAsCards.length; i++){
-            var currentCardValue = handAsCards[i].charAt(0);
-            var currentCount = counts.getOrDefault(currentCardValue, 0) + 1;
-            counts.put(currentCardValue, currentCount);
-
-            if(currentCount >= 2){
-                return true;
-            }
+        for(Character key : this.counts.keySet()){
+            if(this.counts.get(key) == 2) return true;
         }
 
         return false;
     }
 
     private boolean containsTwoPairs(){
-
-        HashMap<Character, Integer> counts = new HashMap<>();
         int pairCount = 0;
 
-        for(int i = 0; i < handAsCards.length; i++){
-            var currentCardValue = handAsCards[i].charAt(0);
-            var currentCount = counts.getOrDefault(currentCardValue, 0) + 1;
-            counts.put(currentCardValue, currentCount);
+        for(Character key : this.counts.keySet()){
+            if(this.counts.get(key) == 2) pairCount++;
         }
-
-        for(Character key : counts.keySet()){
-            //get value
-            int value = counts.get(key);
-            if(value == 2){
-                pairCount++;
-            }
-        }
-
+        
         return pairCount == 2;
     }
+    
+
+    // private boolean isThreeOfAKind(){
+
+    // }
 
     public static String[] generateHand(String handAsString){
         return handAsString.split(" ");

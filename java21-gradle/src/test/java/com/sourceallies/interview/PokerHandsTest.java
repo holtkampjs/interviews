@@ -46,4 +46,15 @@ public class PokerHandsTest{
         assertEquals(PokerRank.PAIR, hand.getRank());
     }
 
+    @Test
+    void shouldBeTwoPair(){
+        PokerHand hand = new PokerHand("2H 2D 5S 5C 3D");
+        assertEquals(PokerRank.TWOPAIRS, hand.getRank());
+    }
+
+    // @Test
+    // void shouldBeThreeOfAKind(){
+    //     PokerHand hand = new PokerHand("2H 5D 5S 5C 3D");
+    //     assertEquals(PokerRank.THREEOFAKIND, hand.getRank());
+    // }
 }
