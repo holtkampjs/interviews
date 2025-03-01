@@ -16,14 +16,6 @@ public class PokerHand {
         calcRank();
     }
 
-    public String getHand(){
-        return hand;
-    }
-
-    public PokerRank getRank(){
-        return rank;
-    }
-
     private HashMap<Character, Integer> generateCountsMap(String[] handAsCards){
         HashMap<Character, Integer> counts = new HashMap<>();
 
@@ -51,28 +43,35 @@ public class PokerHand {
     }
 
     private boolean containsPair(){
-        for(Character key : this.counts.keySet()){
-            if(this.counts.get(key) == 2) return true;
-        }
-
-        return false;
+        return countPairs() == 1;
     }
 
     private boolean containsTwoPairs(){
-        int pairCount = 0;
-
-        for(Character key : this.counts.keySet()){
-            if(this.counts.get(key) == 2) pairCount++;
-        }
-        
-        return pairCount == 2;
+        return countPairs() == 2;
     }
-    
 
     // private boolean isThreeOfAKind(){
 
     // }
 
+
+    //Getters and Setters
+    public String getHand(){
+        return hand;
+    }
+
+    public PokerRank getRank(){
+        return rank;
+    }
+
+    //Helper Functions
+    private int countPairs(){
+        int pairCount = 0;
+        for(Character key : this.counts.keySet()) if(this.counts.get(key) == 2) pairCount++;
+        return pairCount;
+    }
+
+    //Static Functions
     public static String[] generateHand(String handAsString){
         return handAsString.split(" ");
     }
