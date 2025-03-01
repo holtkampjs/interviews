@@ -24,17 +24,6 @@ public class PokerHandsTest{
     }
 
     @Test
-    void shouldReturnHandAsListOfStrings(){
-        var result = PokerHand.generateHand("2H 2D 5S 9C KD");
-        assert(result.length == 5);
-        assertEquals("2H", result[0]);
-        assertEquals("2D", result[1]);
-        assertEquals("5S", result[2]);
-        assertEquals("9C", result[3]);
-        assertEquals("KD", result[4]);
-    }
-
-    @Test
     void shouldBeHighCard(){
         PokerHand hand = new PokerHand("2H 3D 5S 9C KD");
         assertEquals(PokerRank.HIGHCARD, hand.getRank());

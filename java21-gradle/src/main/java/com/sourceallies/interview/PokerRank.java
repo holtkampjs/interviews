@@ -4,5 +4,6 @@ public enum PokerRank{
     HIGHCARD,
     PAIR,
     TWOPAIRS,
-    THREEOFAKIND
+    THREEOFAKIND,
+    FLUSH
 }

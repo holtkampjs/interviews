@@ -3,23 +3,23 @@ package com.sourceallies.interview;
 import java.util.HashMap;
 
 public class PokerHand {
-    private String hand = "";
-    private String[] handAsCards;
+    private final String hand;
+    private Card[] cards;
     private PokerRank rank;
-    private HashMap<Character, Integer> counts;
+    private HashMap<CardValue, Integer> counts;
 
     PokerHand(String hand){
         this.hand = hand;
-        this.handAsCards = generateHand(this.hand);
-        this.counts = generateCountsMap(this.handAsCards);
+        this.cards = convertHandToCards();
+        this.counts = generateCountsMap();
         calcRank();
     }
 
-    private HashMap<Character, Integer> generateCountsMap(String[] handAsCards){
-        HashMap<Character, Integer> counts = new HashMap<>();
+    private HashMap<CardValue, Integer> generateCountsMap(){
+        HashMap<CardValue, Integer> counts = new HashMap<>();
 
-        for(int i = 0; i < handAsCards.length; i++){
-            var currentCardValue = handAsCards[i].charAt(0);
+        for(int i = 0; i < cards.length; i++){
+            var currentCardValue = this.cards[i].getValue();
             var currentCount = counts.getOrDefault(currentCardValue, 0) + 1;
             counts.put(currentCardValue, currentCount);
         }
@@ -48,7 +48,7 @@ public class PokerHand {
     }
 
     private boolean isThreeOfAKind(){
-        for(Character key : this.counts.keySet()) {
+        for(CardValue key : this.counts.keySet()) {
             if(counts.get(key) == 3) return true;
         }
 
@@ -67,7 +67,7 @@ public class PokerHand {
     //Helper Functions
     private int countPairs(){
         int pairCount = 0;
-        for(Character key : this.counts.keySet()) {
+        for(CardValue key : this.counts.keySet()) {
             if(this.counts.get(key) == 2){
                 pairCount++;
             }
@@ -76,9 +76,19 @@ public class PokerHand {
     }
 
     //Static Functions
-    public static String[] generateHand(String handAsString){
+    private String[] generateHandAsStrings(String handAsString){
         return handAsString.split(" ");
     }
 
+    private Card[] convertHandToCards(){
+        String[] tempHand = generateHandAsStrings(this.hand);
+        Card[] cards = new Card[5];
+
+        for(int i = 0; i < cards.length; i++){
+            cards[i] = new Card(tempHand[i]);
+        }
+
+        return cards;
+    }
 
 }
