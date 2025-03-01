@@ -29,7 +29,9 @@ public class PokerHand {
     }
 
     private PokerRank calcRank(){
-        if(isStraight()){
+        if(isFlush()){
+            return PokerRank.FLUSH;
+        }else if(isStraight()){
             return PokerRank.STRAIGHT;
         }else if(isThreeOfAKind()){
             return PokerRank.THREEOFAKIND;
@@ -65,12 +67,28 @@ public class PokerHand {
         if( (initialVal + 1) == cards[1].getValue().getInt() &&
             (initialVal + 2) == cards[2].getValue().getInt() &&
             (initialVal + 3) == cards[3].getValue().getInt() &&
-            (initialVal + 4) == cards[4].getValue().getInt()) {
+            (initialVal + 4) == cards[4].getValue().getInt()) 
+        {
             return true;
         }
 
         return false;
-    }   
+    }
+
+    private boolean isFlush(){
+        //get suit of first
+        Suit suit = cards[0].getSuit();
+
+        if( suit == cards[1].getSuit() &&
+            suit == cards[2].getSuit() &&
+            suit == cards[3].getSuit() &&
+            suit == cards[4].getSuit() ) 
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     //Getters and Setters
     public Card[] getHand(){
@@ -101,7 +119,6 @@ public class PokerHand {
         }
         
         Arrays.sort(cards);
-
         return cards;
     }
 
