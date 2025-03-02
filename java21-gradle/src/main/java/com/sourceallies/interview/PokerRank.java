@@ -7,5 +7,7 @@ public enum PokerRank{
     THREEOFAKIND,
     FLUSH,
     STRAIGHT,
-    FULLHOUSE
+    FULLHOUSE,
+    FOUROFAKIND,
+    STRAIGHTFLUSH
 }

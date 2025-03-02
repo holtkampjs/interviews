@@ -59,4 +59,22 @@ public class PokerHandsTest{
         PokerHand flush = new PokerHand("2H 2C 2S 3H 3H");
         assertEquals(PokerRank.FULLHOUSE, flush.getRank());
     }
+
+    @Test
+    void shouldBeFourOfAKind() {
+        PokerHand fourOfAKind = new PokerHand("2H 2C 2D 2S KS");
+        assertEquals(PokerRank.FOUROFAKIND, fourOfAKind.getRank());
+    }
+
+    @Test
+    void shouldBeStraightFlush() {
+        PokerHand straightFlush = new PokerHand("2H 3H 4H 5H 6H");
+        assertEquals(PokerRank.STRAIGHTFLUSH, straightFlush.getRank());
+    }
+
+    @Test
+    void shouldNotBeStraightFlush() {
+        PokerHand straightFlush = new PokerHand("2H 3H 4H 5H 7H");
+        assertEquals(PokerRank.FLUSH, straightFlush.getRank());
+    }
 }

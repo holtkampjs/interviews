@@ -29,7 +29,11 @@ public class PokerHand {
     }
 
     private PokerRank calcRank() {
-        if (isFullHouse()) {
+        if (isStraightFlush()){
+            return PokerRank.STRAIGHTFLUSH;
+        }else if (isFourOfAKind()){
+            return PokerRank.FOUROFAKIND;
+        } else if (isFullHouse()) {
             return PokerRank.FULLHOUSE;
         } else if (isFlush()) {
             return PokerRank.FLUSH;
@@ -97,6 +101,19 @@ public class PokerHand {
         }
         return false;
 
+    }
+
+    private boolean isFourOfAKind() {
+        for (CardValue key : this.counts.keySet()) {
+            if (counts.get(key) == 4)
+                return true;
+        }
+
+        return false;
+    }
+
+    private boolean isStraightFlush() {
+        return isStraight() && isFlush();
     }
 
     // Getters and Setters
