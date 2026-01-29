@@ -23,7 +23,7 @@ public class WordleTests
     [Theory]
     [InlineData("mango", true)]
     [InlineData("apple", false)]
-
+    [InlineData("MANGO", true)]
     public void IsWordOfTheDay(string word, bool expected)
     {
         Assert.Equal(expected, Wordle.IsWordOfTheDay(word));

@@ -19,7 +19,6 @@ public static class Wordle
         return true;
     }
 
-
     public static bool IsInList(string word)
     {
         List<string> listOfWords = new List<string>
@@ -36,17 +35,19 @@ public static class Wordle
         return listOfWords.Contains(word.ToLower());
     }
 
-
-    public static bool IsWordOfTheDay(string word)
+    public static bool IsWordOfTheDay(string word) // 3min
     {
-        if (word == WordOfTheDay)
+        var THING = String.Compare(word,WordOfTheDay, StringComparison.CurrentCultureIgnoreCase);
+        if (word == WordOfTheDay) 
         {
             return true;
         }
         return false;
     }
 
-    public static string CheckLetters(string word)
+
+
+    public static string CheckLetters(string word) // 4 min
     {
         var WordleCode = new System.Text.StringBuilder();
         foreach (char letter in word)
